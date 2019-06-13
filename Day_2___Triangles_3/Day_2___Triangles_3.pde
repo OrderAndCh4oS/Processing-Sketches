@@ -28,4 +28,5 @@ void draw() {
     x = 0;
     y += triangleHeight;
   }
+  saveFrame("screen-####.png");
 }

@@ -1,6 +1,3 @@
-import gifAnimation.*;
-
-GifMaker gifExport;
 
 int length = 100;
 float angle = 0;
@@ -15,8 +12,6 @@ void setup() {
   size(500, 500);
   stroke(255);
   fill(255);
-  gifExport = new GifMaker(this, "export.gif");
-  gifExport.setRepeat(0);        // make it an "endless" animation
 }
 
 void cross(float x, float y) {
@@ -48,11 +43,6 @@ void draw() {
   start = end - 500;
   angle = start * angleIncrement;
   if (end > 600) {
-      gifExport.setDelay(1);
-      gifExport.addFrame();
+      saveFrame("screen-####.png");
   }
-}
-
-void mousePressed() {
-    gifExport.finish();          // write file
 }
