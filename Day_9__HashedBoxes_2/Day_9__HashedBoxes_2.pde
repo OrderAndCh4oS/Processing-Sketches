@@ -1,42 +1,19 @@
 color bg = color(50, 34, 25);
-color black = color(10, 10, 10);
+color black = color(30, 30, 120);
 color white = color(250, 250, 253);
 int count = 0;
+
+HashedBox box = new HashedBox(1500, 600);
+
 FadeOut fade = new FadeOut(bg);
 
-void drawHashedBox() {
-  float angle = random(-PI, PI);
-  float length = random(40, 150);
-  pushMatrix();
-  rotate(angle);
-  int x = 0;
-  int y = 0;
-  for (int i = 0; i < random(10, 20); i++) {
-    noStroke();
-    fill(white);
-    rect(x, y, 4, length);
-    x += 4;
-    fill(black);
-    rect(x, y, 4, length);
-    x += 4;
-  }
-  popMatrix();
-}
-
-
 void draw() {
-  if (count < 64) {
-    for (int i = 0; i < 3; i++) {
-      pushMatrix();
-      translate(map(count, 0, 64, 0, 640), random(0, 360));
-      drawHashedBox();
-      popMatrix();
-    }
+  if (count < 85) {
+    box.draw();
   } else {
-    fade.draw();
+     exit();
   }
   saveFrame("f####.png");
-  if (fade.isComplete()) exit();
   count++;
 }
 
@@ -46,6 +23,42 @@ void setup() {
   frameRate(24);
 }
 
+class HashedBox {
+  float width;
+  float height;
+  float angle = 0;
+
+  public HashedBox() {
+    this(100, 100);
+  }
+  public HashedBox(float size) {
+    this(size, size);
+  }
+  public HashedBox(float width, float height) {
+    this.width = width;
+    this.height = height;
+  }
+
+  void draw() {
+    pushMatrix();
+    translate(480, 180);
+    rotate(angle);
+    int x = 0;
+    int y = 0;
+    for (int i = 0; i < width / 4; i++) {
+      noStroke();
+      fill(white);
+      rect(x, y, 4, height);
+      x += 4;
+      fill(black);
+      rect(x, y, 4, height);
+      x += 4;
+    }
+    popMatrix();
+    angle += PI / 24;
+  }
+}
+
 public class FadeOut {
   color c = color(0, 0, 0);
   float frames = 24;  
@@ -53,6 +66,7 @@ public class FadeOut {
   int currentFrame = 0;
   int holdEndFrame = 12;
   int holdBlankFrame = 6;
+
   public FadeOut() {
   }
   public FadeOut(color colour) {

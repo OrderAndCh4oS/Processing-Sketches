@@ -1,42 +1,21 @@
-color bg = color(50, 34, 25);
-color black = color(10, 10, 10);
-color white = color(250, 250, 253);
+color bg = #092140;
+color black = #BF2A2A;
+color white = #F2C777;
 int count = 0;
+
+int iterations = 60;
+
+HashedBox box = new HashedBox(220, 6);
+
 FadeOut fade = new FadeOut(bg);
 
-void drawHashedBox() {
-  float angle = random(-PI, PI);
-  float length = random(40, 150);
-  pushMatrix();
-  rotate(angle);
-  int x = 0;
-  int y = 0;
-  for (int i = 0; i < random(10, 20); i++) {
-    noStroke();
-    fill(white);
-    rect(x, y, 4, length);
-    x += 4;
-    fill(black);
-    rect(x, y, 4, length);
-    x += 4;
-  }
-  popMatrix();
-}
-
-
 void draw() {
-  if (count < 64) {
-    for (int i = 0; i < 3; i++) {
-      pushMatrix();
-      translate(map(count, 0, 64, 0, 640), random(0, 360));
-      drawHashedBox();
-      popMatrix();
-    }
+  if (count < iterations*2) {
+    box.draw();
   } else {
-    fade.draw();
+     exit();
   }
   saveFrame("f####.png");
-  if (fade.isComplete()) exit();
   count++;
 }
 
@@ -44,6 +23,45 @@ void setup() {
   background(bg);
   size(640, 360);
   frameRate(24);
+  for (int i = 0; i < iterations; i++) {
+    box.draw();
+  }
+}
+
+class HashedBox {
+  float width;
+  float height;
+  float angle = 0;
+
+  public HashedBox() {
+    this(100, 100);
+  }
+  public HashedBox(float size) {
+    this(size, size);
+  }
+  public HashedBox(float width, float height) {
+    this.width = width;
+    this.height = height;
+  }
+
+  void draw() {
+    pushMatrix();
+    translate(320, 180);
+    rotate(angle);
+    float x = -width;
+    float y = -(height/2);
+    for (int i = 0; i < width / 4; i++) {
+      noStroke();
+      fill(white);
+      rect(x, y, 4, height);
+      x += 4;
+      fill(black);
+      rect(x, y, 4, height);
+      x += 4;
+    }
+    popMatrix();
+    angle += PI / 60;
+  }
 }
 
 public class FadeOut {
@@ -53,6 +71,7 @@ public class FadeOut {
   int currentFrame = 0;
   int holdEndFrame = 12;
   int holdBlankFrame = 6;
+
   public FadeOut() {
   }
   public FadeOut(color colour) {
